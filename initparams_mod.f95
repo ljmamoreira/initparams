@@ -151,6 +151,7 @@ subroutine setvar_r128(varname, var, default_val, op_stat)
    if (present(op_stat)) op_stat = read_status
    if (debugmode) print*, 'Leaving setvar_r128.'
 end subroutine setvar_r128
+
 subroutine ip_parseinputfile(fnvarname,filename,default_val)
    character(len=*), intent(in)::   fnvarname, default_val
    character(len=*), intent(inout)::filename
@@ -164,6 +165,7 @@ subroutine ip_parseinputfile(fnvarname,filename,default_val)
    value_str = vl_getvalue(fnvarname)
    if (value_str == 'UNDEFINED') then
       filename = default_val
+      fname_specified = .false.
    else
       filename = value_str
       fname_specified = .true.
@@ -178,8 +180,10 @@ subroutine init()
    first_invoc = .false.
    call get_command(line)
    call lp_parseline(line)
-   call vl_print()
-   if (debugmode) print*, 'Leaving init.'
+   if (debugmode) then
+      call vl_print()
+      print*, 'Leaving init.'
+   endif
 end subroutine init
 
 subroutine parsefile(filename, fname_specified)
