@@ -1,0 +1,3 @@
+module initparams_mod provides utilities for setting the value of scalar
+parameters in a fortran program.
+
