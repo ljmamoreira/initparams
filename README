@@ -1,3 +1,79 @@
-module initparams_mod provides utilities for setting the value of scalar
+Module initparams_mod provides utilities for setting the value of scalar
 parameters in a fortran program.
+
+
+Using this module, parameters' values can be set on the command line or on an
+input data file (or can take the value of hard coded defaults). The syntax for
+assignments both in the command line and in input files is
+name1 = val1 name2=val2 ...
+There can be more than one assignment in each line, separated by space, and
+space aroud equal signs isn't significant. 
+name1, name2 etc, are the tags with
+which the vars are identified by the module (the simplest option is to take as
+tag the name of the variable).
+val1, val2, etc are the respective values
+
+The public subroutines defined by the module are
+
+subroutine ip_setparam(tag, var, default, exit_status)
+subroutine ip_parseinputfile(tag, filenamevar, default_filename, exit_status)
+
+
+ip_setparam(tag, var, default, exit_status)
+This subroutine sets the variable var to the value defined in the program's
+command line or (if not present in the command line) in a data file, by the
+assignment command tag=<value>
+
+tag (character): tag that identifies the assignment in the command line or in
+    the input file (again, the simplest and clearest option is to take the var
+    name as tag)
+var (logical, integer, character, or real of any kind): variable to be set
+default (same type as var) default value, to be used if the variable isn't
+    assigned to in the command line or in the input file 
+exit_status (integer, optional): exit status (zero if all goes well not zero if
+    otherwise)
+
+
+ip_parseinputfile(tag, filenamevar, default_filename, exit_status)
+
+This subroutine allows for assignments to be read from data file. Before opening
+the file, it searches the command line for definitions of the input filename,
+identified by <tag>; if the filename is not defined in the command line, the
+routine takes the default value defined by default_filename. If the filename is
+set in the command line and the corresponding isn't found, an warning is print,
+but the program continues execution. If the filename isn't defined in the
+command line and a default_filename isn't found, no action is taken, the program
+continues.
+
+Both these routines set up a lookup table with tags (lhs of assignments) and
+vals (rhs) and search it for the value to assign for var (setparam) or
+filenamevar (parseinputfile). Subsequent calls only search the lookuptable, as
+it has already been created.
+
+
+EXAMPLES
+In all the examples, the compiled executable is called ./a.out and the program
+uses the module. $ stands for the command propt
+
+1
+A program includes the line
+call ip_setparam('nx', nx, 3)
+This line thes nx=3 if the program is started with the command line
+$ ./a.out
+or nx=5 when it is started with 
+$ ./a.out nx =5
+
+2
+A program includes the lines
+
+call ip_parseinputfile("datafile", filename, "data.dat")
+call ip_setparam("nx", nx, 3)
+
+The first line check for an assignment in the command line with rhs equal to
+"datafile"; if it is found, sets character var filename to the rhs, else set it
+to "data.dat". It then tries to open such a file and parses all assignments
+therein (creating the lookuptable). The second line sets nx to 3, if no
+assignment nx=<value> is found on the commandline or on the file, or to whatever
+<value> lives on the rhs of such an assignment (command line wins over file).
+
 
