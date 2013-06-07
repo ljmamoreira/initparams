@@ -209,7 +209,6 @@ subroutine parsefile(filename, fname_specified)
    if (debugmode) print*, 'Leaving parsefile.'
 end subroutine parsefile
 
-
 !------------------------------------------------------------------------------
 ! Line parser
 

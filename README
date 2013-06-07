@@ -3,8 +3,8 @@ parameters in a fortran program.
 
 
 Using this module, parameters' values can be set on the command line or on an
-input data file (or can take the value of hard coded defaults). The syntax for
-assignments both in the command line and in input files is
+input data file (or set to hard coded defaults). The syntax for assignments both
+in the command line and in input files is
 name1 = val1 name2=val2 ...
 There can be more than one assignment in each line, separated by space, and
 space aroud equal signs isn't significant. 
