@@ -5,7 +5,7 @@ program tests
    implicit none
    character(len=20):: str='aaa',filename='data.dat'
    logical:: flag=.false.
-   integer:: n=1
+   integer:: n=1, setstat
    real:: pi=3.
    double precision:: sq2=1.
 
@@ -19,7 +19,8 @@ program tests
    print*,'DBLE sq2=       ',sq2
    
    call iprm_readfile("filename",filename)
-   call iprm_set("n", n, n)
+   call iprm_set("n", n, n,setstat)
+   print*,'setstat: ', setstat
    call iprm_set("flag",flag, flag)
    call iprm_set("str",str, str)
    call iprm_set("pi", pi, pi)
