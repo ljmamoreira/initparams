@@ -1,5 +1,5 @@
-Module initparams_mod provides utilities for setting the value of scalar
-parameters in a fortran program.
+Module mod_initprm provides utilities for setting the value of scalar parameters
+in a fortran program.
 
 
 Using this module, parameters' values can be set on the command line or on an
@@ -15,14 +15,17 @@ val1, val2, etc are the respective values
 
 The public subroutines defined by the module are
 
-subroutine ip_setparam(tag, var, default, exit_status)
-subroutine ip_parseinputfile(tag, filenamevar, default_filename, exit_status)
+subroutine iprm_set(tag, var, default, exit_status)
+subroutine iprm_readfile(tag, default_filename)
 
 
-ip_setparam(tag, var, default, exit_status)
+iprm_set(tag, var, default, exit_status)
 This subroutine sets the variable var to the value defined in the program's
 command line or (if not present in the command line) in a data file, by the
-assignment command tag=<value>
+assignment command tag=<value>. If no such command is foud in the command line
+or in the datafile, variable var is set to default. If the assignment cann't be
+done because of type inconsistencies, exit_status (if present) is set to a
+non-zero value.
 
 tag (character): tag that identifies the assignment in the command line or in
     the input file (again, the simplest and clearest option is to take the var

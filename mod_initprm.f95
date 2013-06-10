@@ -1,13 +1,13 @@
-module initparams_mod
+module mod_initprm
    use iso_fortran_env
    implicit none
    private
-   public:: ip_setparam, ip_parseinputfile
+   public:: iprm_set, iprm_readfile
    !initparams vars
    integer:: maxlinelen=200
    logical, save:: first_invoc = .true.
    logical:: debugmode=.false.
-   interface ip_setparam
+   interface iprm_set
       module procedure setvar_log
       module procedure setvar_chr
       module procedure setvar_int
@@ -33,130 +33,53 @@ contains
 !init_params
 
 subroutine setvar_log(varname, var, default_val, op_stat)
-   character(len=*), intent(in):: varname
    logical, intent(out):: var
    logical, intent(in):: default_val
-   integer, intent(out), optional:: op_stat
-   integer:: read_status
-   character(len=vl_varvallen):: value_str
-   if (debugmode) print*, 'Entered setvar_log.'
-   read_status = 0
-   if (first_invoc) call init()
-   value_str = vl_getvalue(varname)
-   if (value_str /= 'UNDEFINED') then
-      read(value_str,*,iostat=read_status)var
-   else
-      var = default_val
-   end if
-   if (present(op_stat)) op_stat = read_status
-   if (debugmode) print*,'Leaving setvar_log'
+   character(len=*), parameter:: procname='setvar_log'
+   include 'iprm_set-patch.f95'
 end subroutine setvar_log
 
 subroutine setvar_chr(varname, var, default_val, op_stat)
-   character(len=*), intent(in)::   varname
    character(len=*), intent(out)::  var
    character(len=*), intent(in)::   default_val
-   integer, intent(out), optional:: op_stat
-   integer::                        read_status
-   character(len=vl_varvallen)::    value_str
-   if (debugmode) print*, 'Entered setvar_chr.'
-   read_status = 0
-   if (first_invoc) call init()
-   value_str = vl_getvalue(varname)
-   if (value_str /= 'UNDEFINED') then
-      read(value_str, *, iostat=read_status) var
-   else
-      var = default_val
-   end if
-   if (present(op_stat)) op_stat = read_status
-   if (debugmode) print*, 'Leaving setvar_chr.'
+   character(len=*), parameter:: procname='setvar_chr'
+   include 'iprm_set-patch.f95'
 end subroutine setvar_chr
 
 subroutine setvar_int(varname, var, default_val, op_stat)
-   character(len=*), intent(in)::   varname
    integer, intent(out)::           var
    integer, intent(in)::            default_val
-   integer, intent(out), optional:: op_stat
-   integer::                        read_status
-   character(len=vl_varvallen)::    value_str
-   if (debugmode) print*, 'Entered setvar_int.'
-   read_status = 0
-   if (first_invoc) call init()
-   value_str = vl_getvalue(varname)
-   if (value_str /= 'UNDEFINED') then
-      read(value_str, *, iostat=read_status) var
-   else
-      var = default_val
-   endif
-   if (present(op_stat)) op_stat = read_status
-   if (debugmode) print*, 'Leaving setvar_int.'
+   character(len=*), parameter:: procname='setvar_int'
+   include 'iprm_set-patch.f95'
 end subroutine setvar_int
 
 subroutine setvar_r32(varname, var, default_val, op_stat)
-   character(len=*), intent(in)::   varname
    real(real32), intent(out)::      var
    real(real32), intent(in)::       default_val
-   integer, intent(out), optional:: op_stat
-   integer::                        read_status
-   character(len=vl_varvallen)::    value_str
-   if (debugmode) print*, 'Entered setvar_r32.'
-   read_status = 0
-   if (first_invoc) call init()
-   value_str = vl_getvalue(varname)
-   if (value_str /= 'UNDEFINED') then
-      read(value_str, *, iostat=read_status) var
-   else
-      var = default_val
-   endif
-   if (present(op_stat)) op_stat = read_status
-   if (debugmode) print*, 'Leaving setvar_r32.'
+   character(len=*), parameter:: procname='setvar_r32'
+   include 'iprm_set-patch.f95'
 end subroutine setvar_r32
 
 subroutine setvar_r64(varname, var, default_val, op_stat)
-   character(len=*), intent(in)::   varname
    real(real64), intent(out)::      var
    real(real64), intent(in)::       default_val
-   integer, intent(out), optional:: op_stat
-   integer::                        read_status
-   character(len=vl_varvallen)::    value_str
-   if (debugmode) print*, 'Entered setvar_r64.'
-   read_status = 0
-   if (first_invoc) call init()
-   value_str = vl_getvalue(varname)
-   if (value_str /= 'UNDEFINED') then
-      read(value_str, *, iostat=read_status) var
-   else
-      var = default_val
-   endif
-   if (present(op_stat)) op_stat = read_status
-   if (debugmode) print*, 'Leaving setvar_r64.'
+   character(len=*), parameter:: procname='setvar_r64'
+   include 'iprm_set-patch.f95'
 end subroutine setvar_r64
 
 subroutine setvar_r128(varname, var, default_val, op_stat)
-   character(len=*), intent(in)::   varname
    real(real128), intent(out)::     var
    real(real128), intent(in)::      default_val
-   integer, intent(out), optional:: op_stat
-   integer::                        read_status
-   character(len=vl_varvallen)::    value_str
-   if (debugmode) print*, 'Entered setvar_r128.'
-   read_status = 0
-   if (first_invoc) call init()
-   value_str = vl_getvalue(varname)
-   if (value_str /= 'UNDEFINED') then
-      read(value_str, *, iostat=read_status) var
-   else
-      var = default_val
-   endif
-   if (present(op_stat)) op_stat = read_status
-   if (debugmode) print*, 'Leaving setvar_r128.'
+   character(len=*), parameter:: procname='setvar_r128'
+   include 'iprm_set-patch.f95'
 end subroutine setvar_r128
 
-subroutine ip_parseinputfile(fnvarname,filename,default_val)
+subroutine iprm_readfile(fnvarname,default_val)
    character(len=*), intent(in)::   fnvarname, default_val
-   character(len=*), intent(inout)::filename
+   integer, parameter:: filenamelen = 20
    integer::                        read_status
    character(len=vl_varvallen)::    value_str
+   character(len=filenamelen):: filename
    logical:: fname_specified
    if (debugmode) print*,'Entered ip_parseinputfile.'
    if (debugmode) print*,'  Args: ',trim(fnvarname),'; ',trim(default_val)
@@ -172,7 +95,7 @@ subroutine ip_parseinputfile(fnvarname,filename,default_val)
    endif
    call parsefile(filename, fname_specified)
    if (debugmode) print*,'Leaving ip_parseinputfile.'
-end subroutine ip_parseinputfile
+end subroutine
 
 subroutine init()
    character(len=maxlinelen):: line
@@ -193,13 +116,14 @@ subroutine parsefile(filename, fname_specified)
    integer:: ioerr
    if (debugmode) print*, 'Entered parsefile.'
    if (debugmode) print*,'  Args: ',trim(filename),'; ',fname_specified
-   open(10, file=filename, status='old', iostat=ioerr)
+   open(10, file=filename, status='old', action='read', iostat=ioerr)
    if (ioerr == 0) then
       do
          read(10,'(A)',iostat=ioerr) line
-         if (ioerr /= 0) exit
+         if (ioerr < 0) exit
          call lp_parseline(line)
       end do
+      close(10)
    else
       if (debugmode) print*, 'Data file not found (',trim(filename),').'
       if (fname_specified) &
@@ -210,7 +134,7 @@ subroutine parsefile(filename, fname_specified)
 end subroutine parsefile
 
 !------------------------------------------------------------------------------
-! Line parser
+! Line parser (prefix: lp_)
 
 subroutine lp_parseline(line)
    character(len=*), intent(in):: line
@@ -350,7 +274,7 @@ function is_ftnchar(c)
 end function is_ftnchar
 
 !------------------------------------------------------------------------------
-! Varlist
+! Varlist     (prefix: vl_)
 
 function vl_isdefined(varname) result(return_val)
 ! Returns True if varname is present in varlist, False otherwise
@@ -478,4 +402,4 @@ subroutine vl_print()
 end subroutine vl_print
    
 
-end module initparams_mod
+end module

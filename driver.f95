@@ -1,7 +1,7 @@
 program tests
    !use varlist_mod
    !use lineparser_mod
-   use initparams_mod
+   use mod_initprm
    implicit none
    character(len=20):: str='aaa',filename='data.dat'
    logical:: flag=.false.
@@ -18,12 +18,12 @@ program tests
    print*,'REAL pi=        ',pi
    print*,'DBLE sq2=       ',sq2
    
-   call ip_parseinputfile("filename",filename,filename)
-   call ip_setparam("n", n, n)
-   call ip_setparam("flag",flag, flag)
-   call ip_setparam("str",str, str)
-   call ip_setparam("pi", pi, pi)
-   call ip_setparam("sq2", sq2, sq2)
+   call iprm_readfile("filename",filename)
+   call iprm_set("n", n, n)
+   call iprm_set("flag",flag, flag)
+   call iprm_set("str",str, str)
+   call iprm_set("pi", pi, pi)
+   call iprm_set("sq2", sq2, sq2)
    
 
    print*
