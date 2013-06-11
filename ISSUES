@@ -1,0 +1,5 @@
+1. Test routines. 
+    This is quite hard because the module invlolves the command line. In order
+    to check it properly, the test routine must invoke a testing program with
+    different command lines. All in all, it seems like overkill, so I won't do
+    it. Not now at least (2013-06-11)
